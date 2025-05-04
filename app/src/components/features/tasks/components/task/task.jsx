@@ -15,7 +15,13 @@ export function Task({ task, onDeleteTask, statusMap }) {
   const { models, operations } = useTask(onDeleteTask);
 
   return (
-    <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg" bg="white">
+    <Box
+      p={{ base: "3", sm: "5" }}
+      shadow="md"
+      borderWidth="1px"
+      borderRadius="lg"
+      bg="white"
+    >
       <Flex justify="space-between" align="center" mb={2}>
         <Heading size="md" flex="1">
           {task.name}
@@ -38,7 +44,7 @@ export function Task({ task, onDeleteTask, statusMap }) {
         <IconButton
           aria-label="Видалити задачу"
           title="Видалити задачу"
-          size="sm"
+          size={{ base: "xs", sm: "sm" }}
           colorPalette="red"
           variant="outline"
           onClick={() => operations.handleDeleteTask(task.id)}

@@ -6,6 +6,7 @@ export function Search({ onSearch, searchTerm, tasksList }) {
       <Input
         placeholder="Пошук"
         mt="2"
+        size={{ base: "xs", md: "sm" }}
         onChange={(e) => onSearch(e.target.value)}
       />
 

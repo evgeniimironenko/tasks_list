@@ -14,11 +14,21 @@ import { Controls } from "../controls/controls";
 import { useHeading } from "./hooks/use-heading";
 import { RiAddCircleLine } from "react-icons/ri";
 
-export function HeadingBox({ searchTerm, tasksList, onAddTask, statuses }) {
+export function HeadingBox({
+  allTasks,
+  searchTerm,
+  tasksList,
+  onAddTask,
+  statuses,
+  usedTasksStatuses,
+  statusMap,
+  onChangeStatus,
+  selectedStatus,
+}) {
   const { models } = useHeading({ searchTerm, tasksList });
 
   return (
-    <Box mt="4">
+    <Box>
       {models.isListVisible || models.isEmptyListSearch ? (
         <>
           <Flex
@@ -26,8 +36,18 @@ export function HeadingBox({ searchTerm, tasksList, onAddTask, statuses }) {
             flexWrap="wrap"
             justifyContent="space-between"
           >
-            <Heading as="h1">Список завдань</Heading>
-            <Controls onAddTask={onAddTask} statuses={statuses} />
+            <Heading as="h1" mr="2" mt="2">
+              Список завдань
+            </Heading>
+            <Controls
+              allTasks={allTasks}
+              onAddTask={onAddTask}
+              statuses={statuses}
+              usedTasksStatuses={usedTasksStatuses}
+              statusMap={statusMap}
+              onChangeStatus={onChangeStatus}
+              selectedStatus={selectedStatus}
+            />
           </Flex>
         </>
       ) : null}
@@ -52,7 +72,7 @@ export function HeadingBox({ searchTerm, tasksList, onAddTask, statuses }) {
               </Dialog.Trigger>
               <Portal>
                 <Dialog.Backdrop />
-                <Dialog.Positioner>
+                <Dialog.Positioner p="2">
                   <Dialog.Content>
                     <Dialog.Header>
                       <Dialog.Title>Додати завдання</Dialog.Title>

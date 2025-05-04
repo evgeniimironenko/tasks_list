@@ -1,12 +1,13 @@
 import { createListCollection } from "@chakra-ui/react";
 import { getTasks } from "../../services/task-api";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export function useTasks() {
   const [allTasks, setAllTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoadingTasks, setIsLoadingTasks] = useState(true);
   const [isErrorTasks, setIsErrorTasks] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState(null);
 
   const statusMap = {
     new: { label: "Нове", color: "blue" },
@@ -16,9 +17,17 @@ export function useTasks() {
     done: { label: "Виконано", color: "green" },
   };
 
-  const filteredTasks = allTasks.filter((task) =>
-    task.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredTasks = useMemo(() => {
+    return allTasks.filter((task) => {
+      const matchesSearch = task.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesStatus = selectedStatus
+        ? task.status === selectedStatus
+        : true;
+      return matchesSearch && matchesStatus;
+    });
+  }, [allTasks, searchTerm, selectedStatus]);
 
   const tasksStatuses = createListCollection({
     items: [
@@ -28,6 +37,13 @@ export function useTasks() {
       { label: "Відміна", value: "cancel" },
     ],
   });
+
+  const usedTasksStatuses = useMemo(() => {
+    const usedStatusSet = new Set(allTasks.map((task) => task.status));
+    return tasksStatuses.items.filter((status) =>
+      usedStatusSet.has(status.value)
+    );
+  }, [allTasks, tasksStatuses]);
 
   const handleCreateTask = async (newTask) => {
     setAllTasks((prev) => [...prev, newTask]);
@@ -46,6 +62,10 @@ export function useTasks() {
 
   const handleSearchTasks = (term) => {
     setSearchTerm(term);
+  };
+
+  const handleStatusFilter = (status) => {
+    setSelectedStatus((prev) => (prev === status ? null : status));
   };
 
   useEffect(() => {
@@ -71,12 +91,15 @@ export function useTasks() {
       isError: isErrorTasks,
       tasksStatuses,
       searchTerm,
+      selectedStatus,
       statusMap,
+      usedTasksStatuses,
     },
     operations: {
       handleCreateTask,
       handleRemoveTask,
       handleSearchTasks,
+      handleStatusFilter,
     },
   };
 }

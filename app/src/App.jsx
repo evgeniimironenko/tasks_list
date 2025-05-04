@@ -4,7 +4,7 @@ import { Toaster } from "./components/ui/toaster";
 
 function App() {
   return (
-    <Container mb="4" mt="4">
+    <Container mb="4">
       <Tasks />
       <Toaster />
     </Container>

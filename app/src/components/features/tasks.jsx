@@ -37,10 +37,15 @@ export function Tasks() {
 
       {!models.isLoading && !models.isError ? (
         <HeadingBox
+          allTasks={models.allTasks}
           searchTerm={models.searchTerm}
           tasksList={models.tasksList}
           onAddTask={operations.handleCreateTask}
           statuses={models.tasksStatuses}
+          usedTasksStatuses={models.usedTasksStatuses}
+          statusMap={models.statusMap}
+          onChangeStatus={operations.handleStatusFilter}
+          selectedStatus={models.selectedStatus}
         />
       ) : null}
 

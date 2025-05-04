@@ -1,46 +1,92 @@
-import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
+import {
+  Button,
+  CloseButton,
+  Dialog,
+  Flex,
+  Icon,
+  IconButton,
+  Portal,
+  Text,
+} from "@chakra-ui/react";
 import TaskForm from "../form/form-tasks";
 import { useControls } from "./hooks/use-controls";
 import { RiAddCircleLine } from "react-icons/ri";
+import { StatusFilter } from "../status-filter/status-filter";
 
-export function Controls({ onAddTask, statuses }) {
-  const { models, operations } = useControls();
+export function Controls({
+  allTasks,
+  onAddTask,
+  statuses,
+  usedTasksStatuses,
+  statusMap,
+  onChangeStatus,
+  selectedStatus,
+}) {
+  const { models, operations } = useControls(allTasks);
 
   return (
-    <Dialog.Root
-      size="lg"
-      open={models.isOpenModal}
-      onEscapeKeyDown={operations.handleCloseModal}
-      onInteractOutside={operations.handleCloseModal}
-      placement="center"
-      motionPreset="slide-in-bottom"
-    >
-      <Dialog.Trigger asChild>
-        <Button size="xs" onClick={operations.handleOpenModal}>
-          <RiAddCircleLine />
-          Додати завдання
-        </Button>
-      </Dialog.Trigger>
-      <Portal>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
-          <Dialog.Content>
-            <Dialog.Header>
-              <Dialog.Title>Додати завдання</Dialog.Title>
-              <Dialog.CloseTrigger asChild>
-                <CloseButton size="sm" onClick={operations.handleCloseModal} />
-              </Dialog.CloseTrigger>
-            </Dialog.Header>
-            <Dialog.Body>
-              <TaskForm
-                onAddTask={onAddTask}
-                onCloseModal={operations.handleCloseModal}
-                statuses={statuses}
-              />
-            </Dialog.Body>
-          </Dialog.Content>
-        </Dialog.Positioner>
-      </Portal>
-    </Dialog.Root>
+    <>
+      <Flex
+        width={models.isShowFilter ? { base: "100%", md: "auto" } : null}
+        justifyContent="flex-end"
+      >
+        {models.isShowFilter ? (
+          <StatusFilter
+            allTasks={allTasks}
+            usedTasksStatuses={usedTasksStatuses}
+            statusMap={statusMap}
+            onChangeStatus={onChangeStatus}
+            selectedStatus={selectedStatus}
+          />
+        ) : null}
+
+        <Dialog.Root
+          size="lg"
+          open={models.isOpenModal}
+          onEscapeKeyDown={operations.handleCloseModal}
+          onInteractOutside={operations.handleCloseModal}
+          placement="center"
+          motionPreset="slide-in-bottom"
+        >
+          <Dialog.Trigger asChild>
+            <Button
+              size="xs"
+              mt="2"
+              aria-label="Додати завдання"
+              title="Додати завдання"
+              onClick={operations.handleOpenModal}
+            >
+              <RiAddCircleLine />
+              <Text display={{ base: "none", md: "inline" }}>
+                Додати завдання
+              </Text>
+            </Button>
+          </Dialog.Trigger>
+          <Portal>
+            <Dialog.Backdrop />
+            <Dialog.Positioner p="2">
+              <Dialog.Content>
+                <Dialog.Header>
+                  <Dialog.Title>Додати завдання</Dialog.Title>
+                  <Dialog.CloseTrigger asChild>
+                    <CloseButton
+                      size="sm"
+                      onClick={operations.handleCloseModal}
+                    />
+                  </Dialog.CloseTrigger>
+                </Dialog.Header>
+                <Dialog.Body>
+                  <TaskForm
+                    onAddTask={onAddTask}
+                    onCloseModal={operations.handleCloseModal}
+                    statuses={statuses}
+                  />
+                </Dialog.Body>
+              </Dialog.Content>
+            </Dialog.Positioner>
+          </Portal>
+        </Dialog.Root>
+      </Flex>
+    </>
   );
 }
