@@ -63,6 +63,7 @@ export function HeadingBox({
               size="lg"
               placement="center"
               motionPreset="slide-in-bottom"
+              closeOnInteractOutside={false}
             >
               <Dialog.Trigger asChild>
                 <Button mt="3" size="xl">

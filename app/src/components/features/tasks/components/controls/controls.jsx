@@ -44,20 +44,20 @@ export function Controls({
           size="lg"
           open={models.isOpenModal}
           onEscapeKeyDown={operations.handleCloseModal}
-          onInteractOutside={operations.handleCloseModal}
           placement="center"
           motionPreset="slide-in-bottom"
+          closeOnInteractOutside={false}
         >
           <Dialog.Trigger asChild>
             <Button
-              size="xs"
+              size="sm"
               mt="2"
               aria-label="Додати завдання"
               title="Додати завдання"
               onClick={operations.handleOpenModal}
             >
               <RiAddCircleLine />
-              <Text display={{ base: "none", md: "inline" }}>
+              <Text display={{ base: "none", sm: "inline" }}>
                 Додати завдання
               </Text>
             </Button>

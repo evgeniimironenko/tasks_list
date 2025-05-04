@@ -25,10 +25,10 @@ export function StatusFilter({
         const newStatus = value.value[0] === "" ? null : value.value[0];
         onChangeStatus(newStatus);
       }}
-      size="xs"
+      size="sm"
       mr="2"
       mt="2"
-      width={{ base: "100%", sm: "150px" }}
+      width={{ base: "100%", md: "150px" }}
     >
       <Select.HiddenSelect />
       <Select.Control>
@@ -72,10 +72,11 @@ export function StatusFilter({
                         h="2"
                         borderRadius="full"
                         bg={`${color}.400`}
+                        fontSize="sm"
                       />
                       <Text fontSize="sm">{status.label}</Text>
                     </HStack>
-                    <Text fontSize="xs" color="gray.500">
+                    <Text fontSize="sm" color="gray.500">
                       {count}
                     </Text>
                   </HStack>

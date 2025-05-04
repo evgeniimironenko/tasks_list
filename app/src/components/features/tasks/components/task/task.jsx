@@ -44,7 +44,7 @@ export function Task({ task, onDeleteTask, statusMap }) {
         <IconButton
           aria-label="Видалити задачу"
           title="Видалити задачу"
-          size={{ base: "xs", sm: "sm" }}
+          size='sm'
           colorPalette="red"
           variant="outline"
           onClick={() => operations.handleDeleteTask(task.id)}
