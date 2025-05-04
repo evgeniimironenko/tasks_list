@@ -17,7 +17,7 @@ export function Controls({ onAddTask, statuses }) {
     >
       <Dialog.Trigger asChild>
         <Button size="xs" onClick={operations.handleOpenModal}>
-          <RiAddCircleLine size="xs" />
+          <RiAddCircleLine />
           Додати завдання
         </Button>
       </Dialog.Trigger>
