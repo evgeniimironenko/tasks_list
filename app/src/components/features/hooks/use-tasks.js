@@ -8,6 +8,27 @@ export function useTasks() {
   const [isLoadingTasks, setIsLoadingTasks] = useState(true);
   const [isErrorTasks, setIsErrorTasks] = useState(false);
 
+  const statusMap = {
+    new: { label: "Нове", color: "blue" },
+    in_progress: { label: "У роботі", color: "orange" },
+    duggling: { label: "На розгляді", color: "purple" },
+    cancel: { label: "Відміна", color: "red" },
+    done: { label: "Виконано", color: "green" },
+  };
+
+  const filteredTasks = allTasks.filter((task) =>
+    task.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const tasksStatuses = createListCollection({
+    items: [
+      { label: "Нове", value: "new" },
+      { label: "У роботі", value: "in_progress" },
+      { label: "На розгляді", value: "duggling" },
+      { label: "Відміна", value: "cancel" },
+    ],
+  });
+
   const handleCreateTask = async (newTask) => {
     setAllTasks((prev) => [...prev, newTask]);
     return Promise.resolve();
@@ -26,19 +47,6 @@ export function useTasks() {
   const handleSearchTasks = (term) => {
     setSearchTerm(term);
   };
-
-  const filteredTasks = allTasks.filter((task) =>
-    task.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const tasksStatuses = createListCollection({
-    items: [
-      { label: "Нове", value: "new" },
-      { label: "У роботі", value: "in_progress" },
-      { label: "На розгляді", value: "duggling" },
-      { label: "Відміна", value: "cancel" },
-    ],
-  });
 
   useEffect(() => {
     async function fetchTasks() {
@@ -63,6 +71,7 @@ export function useTasks() {
       isError: isErrorTasks,
       tasksStatuses,
       searchTerm,
+      statusMap,
     },
     operations: {
       handleCreateTask,

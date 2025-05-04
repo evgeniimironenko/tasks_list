@@ -56,6 +56,7 @@ export function Tasks() {
         <List
           tasksList={models.tasksList}
           onDeleteTask={operations.handleRemoveTask}
+          statusMap={models.statusMap}
         />
       ) : null}
     </>

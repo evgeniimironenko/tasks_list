@@ -6,14 +6,6 @@ export function useTask(onDeleteTask) {
   const [isDeleteLoading, setIsDeleteLoading] = useState(null);
   const [isDeleteError, setIsDeleteError] = useState(false);
 
-  const statusMap = {
-    new: { label: "Нове", color: "blue" },
-    in_progress: { label: "У роботі", color: "orange" },
-    duggling: { label: "На розгляді", color: "purple" },
-    cancel: { label: "Відміна", color: "red" },
-    done: { label: "Виконано", color: "green" },
-  };
-
   const handleDeleteTask = async (taskId) => {
     const deletePromise = deleteTask(taskId);
 
@@ -44,7 +36,6 @@ export function useTask(onDeleteTask) {
     models: {
       isDeleteLoading,
       isDeleteError,
-      statusMap,
     },
     operations: {
       handleDeleteTask,

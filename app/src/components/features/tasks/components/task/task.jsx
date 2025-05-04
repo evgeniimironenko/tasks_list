@@ -11,7 +11,7 @@ import {
 import { LuTrash } from "react-icons/lu";
 import { useTask } from "./hooks/use-task";
 
-export function Task({ task, onDeleteTask }) {
+export function Task({ task, onDeleteTask, statusMap }) {
   const { models, operations } = useTask(onDeleteTask);
 
   return (
@@ -20,11 +20,8 @@ export function Task({ task, onDeleteTask }) {
         <Heading size="md" flex="1">
           {task.name}
         </Heading>
-        <Badge
-          ml="2"
-          colorPalette={models.statusMap[task.status]?.color || "gray"}
-        >
-          {models.statusMap[task.status]?.label || "Невідомо"}
+        <Badge ml="2" colorPalette={statusMap[task.status]?.color || "gray"}>
+          {statusMap[task.status]?.label || "Невідомо"}
         </Badge>
       </Flex>
       {task.description && (
