@@ -11,10 +11,10 @@ export function useTasks() {
 
   const statusMap = {
     new: { label: "Нове", color: "blue" },
-    in_progress: { label: "У роботі", color: "orange" },
-    duggling: { label: "На розгляді", color: "purple" },
-    cancel: { label: "Відміна", color: "red" },
+    in_progress: { label: "У роботі", color: "yellow" },
+    duggling: { label: "На подумати", color: "purple" },
     done: { label: "Виконано", color: "green" },
+    cancel: { label: "Відміна", color: "red" },
   };
 
   const filteredTasks = useMemo(() => {
@@ -34,6 +34,7 @@ export function useTasks() {
       { label: "Нове", value: "new" },
       { label: "У роботі", value: "in_progress" },
       { label: "На розгляді", value: "duggling" },
+      { label: "Виконано", value: "done" },
       { label: "Відміна", value: "cancel" },
     ],
   });
