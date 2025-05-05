@@ -53,9 +53,19 @@ export function useTasks() {
   const handleRemoveTask = (taskId) => {
     setAllTasks((prev) => {
       const updatedTasks = prev.filter((task) => task.id !== taskId);
+
       if (updatedTasks.length === 0) {
         setSearchTerm("");
       }
+
+      const hasSelectedStatusTasks = updatedTasks.some(
+        (task) => task.status === selectedStatus
+      );
+
+      if (!hasSelectedStatusTasks) {
+        setSelectedStatus(null);
+      }
+
       return updatedTasks;
     });
   };
