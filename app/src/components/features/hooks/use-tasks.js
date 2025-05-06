@@ -71,6 +71,23 @@ export function useTasks() {
     });
   };
 
+  const handleEditTask = (updatedTask) => {
+    setAllTasks((prevTasks) => {
+      const updatedTasks = prevTasks.map((task) =>
+        task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+      );
+
+      const hasSelectedStatusTasks = updatedTasks.some(
+        (task) => task.status === selectedStatus
+      );
+
+      if (!hasSelectedStatusTasks) {
+        setSelectedStatus(null);
+      }
+
+      return updatedTasks;
+    });
+  };
   const handleSearchTasks = (term) => {
     setSearchTerm(term);
   };
@@ -111,6 +128,7 @@ export function useTasks() {
       handleRemoveTask,
       handleSearchTasks,
       handleStatusFilter,
+      handleEditTask,
     },
   };
 }

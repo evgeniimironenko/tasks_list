@@ -1,11 +1,21 @@
-import { createTask } from "../../../../../services/task-api";
+import { createTask, editTask } from "../../../../../services/task-api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toaster } from "../../../../../ui/toaster";
 
-export function useFormTasks({ onAddTask, onCloseModal }) {
+export function useFormTasks({
+  isEditTask,
+  taskId,
+  onAddTask,
+  onCloseModal,
+  name,
+  description,
+  code,
+  activeStatus,
+  onEditTask,
+}) {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
 
@@ -34,45 +44,74 @@ export function useFormTasks({ onAddTask, onCloseModal }) {
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      taskName: "",
-      taskDescription: "",
-      taskCode: "",
-      status: ["new"],
+      taskName: name ?? "",
+      taskDescription: description ?? "",
+      taskCode: code ?? "",
+      status: activeStatus ? [activeStatus] : ["new"],
     },
   });
 
   const onSubmit = async (data) => {
     const taskData = {
+      id: data.id,
       name: data.taskName,
       description: data.taskDescription,
       status: data.status[0],
       code: data.taskCode,
     };
 
-    const createTaskPromise = createTask(taskData);
+    if (isEditTask) {
+      const editTaskPromise = editTask(taskId, taskData);
 
-    toaster.promise(createTaskPromise, {
-      success: {
-        title: "Задачу успішно створено",
-        description: "Вітаємо!",
-      },
-      error: {
-        title: "Виникла помилка при додаванні задачі",
-        description: "Спробуйте перезавантажити сторінку.",
-      },
-      loading: { title: "Додаємо задачу...", description: "Зачекайте" },
-    });
+      toaster.promise(editTaskPromise, {
+        success: {
+          title: "Задачу успішно відредаговано",
+          description: "Вітаємо!",
+        },
+        error: {
+          title: "Виникла помилка при редагуванні задачі",
+          description: "Спробуйте перезавантажити сторінку.",
+        },
+        loading: { title: "Редагуємо задачу...", description: "Зачекайте" },
+      });
 
-    try {
-      setLoading(true);
-      const createdTask = await createTaskPromise;
-      onAddTask(createdTask);
-      reset();
-      onCloseModal();
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
+      try {
+        setLoading(true);
+        const editTask = await editTaskPromise;
+        onEditTask(editTask);
+        reset();
+        onCloseModal();
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      const createTaskPromise = createTask(taskData);
+
+      toaster.promise(createTaskPromise, {
+        success: {
+          title: "Задачу успішно створено",
+          description: "Вітаємо!",
+        },
+        error: {
+          title: "Виникла помилка при додаванні задачі",
+          description: "Спробуйте перезавантажити сторінку.",
+        },
+        loading: { title: "Додаємо задачу...", description: "Зачекайте" },
+      });
+
+      try {
+        setLoading(true);
+        const createdTask = await createTaskPromise;
+        onAddTask(createdTask);
+        reset();
+        onCloseModal();
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

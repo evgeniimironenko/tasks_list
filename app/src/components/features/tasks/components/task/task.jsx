@@ -1,17 +1,21 @@
 import {
   Badge,
   Box,
+  CloseButton,
   Code,
+  Dialog,
   Flex,
   Heading,
   Icon,
   IconButton,
+  Portal,
   Text,
 } from "@chakra-ui/react";
-import { LuTrash } from "react-icons/lu";
+import { LuPencil, LuTrash } from "react-icons/lu";
 import { useTask } from "./hooks/use-task";
+import TaskForm from "../form/form-tasks";
 
-export function Task({ task, onDeleteTask, statusMap }) {
+export function Task({ task, onDeleteTask, statusMap, statuses, onEditTask }) {
   const { models, operations } = useTask(onDeleteTask);
 
   return (
@@ -41,6 +45,57 @@ export function Task({ task, onDeleteTask, statusMap }) {
         </Code>
       )}
       <Flex justify="flex-end">
+        <Dialog.Root
+          size="lg"
+          open={models.isOpenModal}
+          onEscapeKeyDown={operations.handleCloseModal}
+          placement="center"
+          motionPreset="slide-in-bottom"
+          closeOnInteractOutside={false}
+        >
+          <Dialog.Trigger asChild>
+            <IconButton
+              aria-label="Редагувати завдання"
+              title="Редагувати завдання"
+              size="sm"
+              colorPalette="gray"
+              variant="outline"
+              mr="2"
+              onClick={operations.handleOpenModal}
+            >
+              <Icon as={LuPencil} boxSize={4} color="gray.500" />
+            </IconButton>
+          </Dialog.Trigger>
+          <Portal>
+            <Dialog.Backdrop />
+            <Dialog.Positioner p="2">
+              <Dialog.Content>
+                <Dialog.Header>
+                  <Dialog.Title>Редагувати завдання</Dialog.Title>
+                  <Dialog.CloseTrigger asChild>
+                    <CloseButton
+                      size="sm"
+                      onClick={operations.handleCloseModal}
+                    />
+                  </Dialog.CloseTrigger>
+                </Dialog.Header>
+                <Dialog.Body>
+                  <TaskForm
+                    isEditTask
+                    taskId={task.id}
+                    onCloseModal={operations.handleCloseModal}
+                    statuses={statuses}
+                    name={task.name}
+                    description={task.description}
+                    code={task.code}
+                    activeStatus={task.status}
+                    onEditTask={onEditTask}
+                  />
+                </Dialog.Body>
+              </Dialog.Content>
+            </Dialog.Positioner>
+          </Portal>
+        </Dialog.Root>
         <IconButton
           aria-label="Видалити задачу"
           title="Видалити задачу"

@@ -5,6 +5,9 @@ import { toaster } from "../../../../../ui/toaster";
 export function useTask(onDeleteTask) {
   const [isDeleteLoading, setIsDeleteLoading] = useState(null);
   const [isDeleteError, setIsDeleteError] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const handleOpenModal = () => setIsOpenModal(true);
+  const handleCloseModal = () => setIsOpenModal(false);
 
   const handleDeleteTask = async (taskId) => {
     const deletePromise = deleteTask(taskId);
@@ -36,9 +39,12 @@ export function useTask(onDeleteTask) {
     models: {
       isDeleteLoading,
       isDeleteError,
+      isOpenModal,
     },
     operations: {
       handleDeleteTask,
+      handleOpenModal,
+      handleCloseModal,
     },
   };
 }

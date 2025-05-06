@@ -11,8 +11,29 @@ import {
 import { Controller } from "react-hook-form";
 import { useFormTasks } from "./hooks/use-form-tasks";
 
-const TaskForm = ({ onAddTask, statuses, onCloseModal }) => {
-  const { models, operations } = useFormTasks({ onAddTask, onCloseModal });
+const TaskForm = ({
+  isEditTask,
+  taskId,
+  onAddTask,
+  statuses,
+  onCloseModal,
+  name,
+  description,
+  code,
+  activeStatus,
+  onEditTask,
+}) => {
+  const { models, operations } = useFormTasks({
+    taskId,
+    isEditTask,
+    onAddTask,
+    onCloseModal,
+    name,
+    description,
+    code,
+    activeStatus,
+    onEditTask,
+  });
 
   return (
     <form onSubmit={operations.handleSubmit} position="relative">
@@ -98,7 +119,7 @@ const TaskForm = ({ onAddTask, statuses, onCloseModal }) => {
       </Field.Root>
 
       <Button type="submit" variant="subtle" mt={4} loading={models.isLoading}>
-        Створити завдання
+        {isEditTask ? "Редагувати" : "Створити завдання"}
       </Button>
     </form>
   );

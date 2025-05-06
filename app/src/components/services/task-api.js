@@ -20,6 +20,22 @@ export const createTask = async (task) => {
   return data;
 };
 
+export const editTask = async (taskId, task) => {
+  const res = await fetch(
+    `https://67fbb3891f8b41c816849f2e.mockapi.io/tasks/${taskId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    }
+  );
+
+  const data = await res.json();
+  return data;
+};
+
 export const deleteTask = async (taskId) => {
   const res = await fetch(
     `https://67fbb3891f8b41c816849f2e.mockapi.io/tasks/${taskId}`,

@@ -62,6 +62,8 @@ export function Tasks() {
           tasksList={models.tasksList}
           onDeleteTask={operations.handleRemoveTask}
           statusMap={models.statusMap}
+          statuses={models.tasksStatuses}
+          onEditTask={operations.handleEditTask}
         />
       ) : null}
     </>
