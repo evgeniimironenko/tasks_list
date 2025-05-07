@@ -1,18 +1,7 @@
-import {
-  AbsoluteCenter,
-  Box,
-  Button,
-  CloseButton,
-  Dialog,
-  Flex,
-  Heading,
-  Portal,
-  Text,
-} from "@chakra-ui/react";
-import TaskForm from "../form/form-tasks";
+import { AbsoluteCenter, Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { Controls } from "../controls/controls";
 import { useHeading } from "./hooks/use-heading";
-import { RiAddCircleLine } from "react-icons/ri";
+import TaskDialog from "../task-dialog/task-dialog";
 
 export function HeadingBox({
   allTasks,
@@ -59,35 +48,7 @@ export function HeadingBox({
             <Text textAlign="center" mt="2">
               Список завдань пустий, додайте нові завдання
             </Text>
-            <Dialog.Root
-              size="lg"
-              placement="center"
-              motionPreset="slide-in-bottom"
-              closeOnInteractOutside={false}
-            >
-              <Dialog.Trigger asChild>
-                <Button mt="3" size="xl">
-                  <RiAddCircleLine />
-                  Додати завдання
-                </Button>
-              </Dialog.Trigger>
-              <Portal>
-                <Dialog.Backdrop />
-                <Dialog.Positioner p="2">
-                  <Dialog.Content>
-                    <Dialog.Header>
-                      <Dialog.Title>Додати завдання</Dialog.Title>
-                      <Dialog.CloseTrigger asChild>
-                        <CloseButton size="sm" />
-                      </Dialog.CloseTrigger>
-                    </Dialog.Header>
-                    <Dialog.Body>
-                      <TaskForm onAddTask={onAddTask} statuses={statuses} />
-                    </Dialog.Body>
-                  </Dialog.Content>
-                </Dialog.Positioner>
-              </Portal>
-            </Dialog.Root>
+            <TaskDialog onAddTask={onAddTask} statuses={statuses} />
           </AbsoluteCenter>
         </Box>
       ) : null}

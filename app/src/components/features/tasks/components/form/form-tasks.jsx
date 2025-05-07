@@ -39,7 +39,7 @@ const TaskForm = ({
     <form onSubmit={operations.handleSubmit} position="relative">
       <Field.Root invalid={!!models.errors.taskName}>
         <Field.Label>
-          Назва завдання <FieldRequiredIndicator></FieldRequiredIndicator>{" "}
+          Назва завдання <FieldRequiredIndicator />
         </Field.Label>
         <Input
           {...operations.register("taskName")}
@@ -51,7 +51,7 @@ const TaskForm = ({
 
       <Field.Root mt={4} invalid={!!models.errors.taskDescription}>
         <Field.Label>
-          Опис <Box color="gray.500"> (Необовязково)</Box>
+          Опис <Box color="gray.500"> (Необов'язково)</Box>
         </Field.Label>
         <Textarea
           {...operations.register("taskDescription")}
@@ -66,7 +66,7 @@ const TaskForm = ({
 
       <Field.Root mt={4} invalid={!!models.errors.taskCode}>
         <Field.Label>
-          Приклад коду <Box color="gray.500"> (Необовязково)</Box>
+          Приклад коду <Box color="gray.500"> (Необов'язково)</Box>
         </Field.Label>
         <Textarea
           {...operations.register("taskCode")}
@@ -104,7 +104,11 @@ const TaskForm = ({
                 <Select.Positioner zIndex="9999!important">
                   <Select.Content>
                     {statuses.items.map((status) => (
-                      <Select.Item item={status} key={status.value}>
+                      <Select.Item
+                        item={status}
+                        key={status.value}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         {status.label}
                         <Select.ItemIndicator />
                       </Select.Item>
