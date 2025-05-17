@@ -13,6 +13,7 @@ export function useFormTasks({
   name,
   description,
   code,
+  date,
   activeStatus,
   onEditTask,
 }) {
@@ -33,6 +34,7 @@ export function useFormTasks({
       .string()
       .max(1000, { message: "Приклад коду не може бути більше 1000 символів" })
       .optional(),
+    date: z.date().optional(),
   });
 
   const {
@@ -48,6 +50,7 @@ export function useFormTasks({
       taskDescription: description ?? "",
       taskCode: code ?? "",
       status: activeStatus ? [activeStatus] : ["new"],
+      date: date ?? new Date(),
     },
   });
 
@@ -58,6 +61,7 @@ export function useFormTasks({
       description: data.taskDescription,
       status: data.status[0],
       code: data.taskCode,
+      date: data.date,
     };
 
     if (isEditTask) {

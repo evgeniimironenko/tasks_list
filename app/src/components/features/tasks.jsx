@@ -1,4 +1,3 @@
-import Form from "./tasks/components/form/form-tasks";
 import { List } from "./tasks/components/list/list";
 import { useTasks } from "./hooks/use-tasks";
 import { HeadingBox } from "./tasks/components/heading/heading";
@@ -10,7 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { Search } from "./tasks/components/search/search";
+import Toolbar from "./tasks/components/toolbar/toolbar";
 
 export function Tasks() {
   const { models, operations } = useTasks();
@@ -50,10 +49,12 @@ export function Tasks() {
       ) : null}
 
       {models.allTasks.length > 0 && (
-        <Search
-          onSearch={operations.handleSearchTasks}
+        <Toolbar
+          onHandleSearch={operations.handleSearchTasks}
           searchTerm={models.searchTerm}
           tasksList={models.tasksList}
+          onHandleSortType={operations.handleSortType}
+          selectedStatus={models.selectedStatus}
         />
       )}
 

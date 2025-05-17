@@ -3,13 +3,16 @@ import { deleteTask } from "../../../../../services/task-api";
 import { toaster } from "../../../../../ui/toaster";
 
 export function useTask(onDeleteTask) {
-  const [isDeleteLoading, setIsDeleteLoading] = useState(null);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isDeleteError, setIsDeleteError] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const handleOpenModal = () => setIsOpenModal(true);
   const handleCloseModal = () => setIsOpenModal(false);
 
   const handleDeleteTask = async (taskId) => {
+    if (isDeleteLoading) return;
+
+    setIsDeleteLoading(true);
     const deletePromise = deleteTask(taskId);
 
     toaster.promise(deletePromise, {
@@ -19,19 +22,18 @@ export function useTask(onDeleteTask) {
       },
       error: {
         title: "Виникла помилка при видаленні задачі",
-        description: "Cпробуйте перезавантажити сторінку.",
+        description: "Спробуйте перезавантажити сторінку.",
       },
       loading: { title: "Видалення...", description: "Зачекайте" },
     });
 
     try {
-      setIsDeleteLoading(taskId);
       await deletePromise;
       onDeleteTask(taskId);
     } catch (error) {
       setIsDeleteError(error.message);
     } finally {
-      setIsDeleteLoading(null);
+      setIsDeleteLoading(false);
     }
   };
 

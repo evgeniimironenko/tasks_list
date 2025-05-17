@@ -8,17 +8,48 @@ export function useTasks() {
   const [isLoadingTasks, setIsLoadingTasks] = useState(true);
   const [isErrorTasks, setIsErrorTasks] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
+  const [sortType, setSortType] = useState("date");
+
+  useEffect(() => {
+    async function fetchTasks() {
+      try {
+        setIsLoadingTasks(true);
+        const tasks = await getTasks();
+
+        const sortedTasks = tasks.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+
+        setAllTasks(sortedTasks);
+      } catch (error) {
+        setIsErrorTasks(error.message);
+      } finally {
+        setIsLoadingTasks(false);
+      }
+    }
+    fetchTasks();
+  }, []);
 
   const statusMap = {
     new: { label: "Нове", color: "blue" },
     in_progress: { label: "У роботі", color: "yellow" },
-    duggling: { label: "На подумати", color: "purple" },
+    duggling: { label: "Призупинено", color: "purple" },
     done: { label: "Виконано", color: "green" },
     cancel: { label: "Відміна", color: "red" },
   };
 
+  const tasksStatuses = createListCollection({
+    items: [
+      { label: "Нове", value: "new" },
+      { label: "У роботі", value: "in_progress" },
+      { label: "Призупинено", value: "duggling" },
+      { label: "Виконано", value: "done" },
+      { label: "Відміна", value: "cancel" },
+    ],
+  });
+
   const filteredTasks = useMemo(() => {
-    return allTasks.filter((task) => {
+    const filtered = allTasks.filter((task) => {
       const matchesSearch = task.name
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
@@ -27,17 +58,20 @@ export function useTasks() {
         : true;
       return matchesSearch && matchesStatus;
     });
-  }, [allTasks, searchTerm, selectedStatus]);
 
-  const tasksStatuses = createListCollection({
-    items: [
-      { label: "Нове", value: "new" },
-      { label: "У роботі", value: "in_progress" },
-      { label: "На розгляді", value: "duggling" },
-      { label: "Виконано", value: "done" },
-      { label: "Відміна", value: "cancel" },
-    ],
-  });
+    const sorted = [...filtered];
+
+    if (sortType === "date_newest") {
+      sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (sortType === "date_oldest") {
+      sorted.sort((a, b) => new Date(a.date) - new Date(b.date));
+    } else if (sortType === "status") {
+      const order = ["new", "in_progress", "duggling", "done", "cancel"];
+      sorted.sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
+    }
+
+    return sorted;
+  }, [allTasks, searchTerm, selectedStatus, sortType]);
 
   const usedTasksStatuses = useMemo(() => {
     const usedStatusSet = new Set(allTasks.map((task) => task.status));
@@ -47,7 +81,7 @@ export function useTasks() {
   }, [allTasks, tasksStatuses]);
 
   const handleCreateTask = async (newTask) => {
-    setAllTasks((prev) => [...prev, newTask]);
+    setAllTasks((prev) => [newTask, ...prev]);
     return Promise.resolve();
   };
 
@@ -96,20 +130,9 @@ export function useTasks() {
     setSelectedStatus((prev) => (prev === status ? null : status));
   };
 
-  useEffect(() => {
-    async function fetchTasks() {
-      try {
-        setIsLoadingTasks(true);
-        const tasks = await getTasks();
-        setAllTasks(tasks);
-      } catch (error) {
-        setIsErrorTasks(error.message);
-      } finally {
-        setIsLoadingTasks(false);
-      }
-    }
-    fetchTasks();
-  }, []);
+  const handleSortType = (type) => {
+    setSortType(type);
+  };
 
   return {
     models: {
@@ -129,6 +152,7 @@ export function useTasks() {
       handleSearchTasks,
       handleStatusFilter,
       handleEditTask,
+      handleSortType,
     },
   };
 }

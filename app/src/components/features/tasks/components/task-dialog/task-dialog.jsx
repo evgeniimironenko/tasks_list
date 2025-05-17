@@ -57,7 +57,7 @@ const TaskDialog = ({
           >
             <RiAddCircleLine />
             <Text display={isSmallBtn ? { base: "none", sm: "inline" } : null}>
-              "Додати завдання"
+              Додати завдання
             </Text>
           </Button>
         )}
@@ -86,6 +86,7 @@ const TaskDialog = ({
                 description={task?.description}
                 code={task?.code}
                 activeStatus={task?.status}
+                date={task?.date}
               />
             </Dialog.Body>
           </Dialog.Content>

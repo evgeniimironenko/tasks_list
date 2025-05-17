@@ -5,12 +5,7 @@ export function StatusFilter({
   statusMap,
   onChangeStatus,
   selectedStatus,
-  allTasks,
 }) {
-  const getTaskCount = (statusValue) => {
-    return allTasks.filter((task) => task.status === statusValue).length;
-  };
-
   const collection = {
     items: usedTasksStatuses.map((status) => ({
       label: status.label,
@@ -55,7 +50,6 @@ export function StatusFilter({
             </Select.Item>
 
             {collection.items.map((status) => {
-              const count = getTaskCount(status.value);
               const color = statusMap[status.value]?.color || "gray";
               const isSelected = selectedStatus === status.value;
 
@@ -76,9 +70,6 @@ export function StatusFilter({
                       />
                       <Text fontSize="sm">{status.label}</Text>
                     </HStack>
-                    <Text fontSize="sm" color="gray.500">
-                      {count}
-                    </Text>
                   </HStack>
                 </Select.Item>
               );

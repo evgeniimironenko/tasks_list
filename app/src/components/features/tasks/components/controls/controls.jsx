@@ -22,7 +22,6 @@ export function Controls({
       >
         {models.isShowFilter ? (
           <StatusFilter
-            allTasks={allTasks}
             usedTasksStatuses={usedTasksStatuses}
             statusMap={statusMap}
             onChangeStatus={onChangeStatus}

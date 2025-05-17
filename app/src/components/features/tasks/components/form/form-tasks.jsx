@@ -22,6 +22,7 @@ const TaskForm = ({
   code,
   activeStatus,
   onEditTask,
+  date,
 }) => {
   const { models, operations } = useFormTasks({
     taskId,
@@ -33,6 +34,7 @@ const TaskForm = ({
     code,
     activeStatus,
     onEditTask,
+    date,
   });
 
   return (
@@ -121,6 +123,8 @@ const TaskForm = ({
         />
         <Field.ErrorText>{models.errors.status?.message}</Field.ErrorText>
       </Field.Root>
+
+      <Input type="hidden" {...operations.register("date")} />
 
       <Button type="submit" variant="subtle" mt={4} loading={models.isLoading}>
         {isEditTask ? "Редагувати" : "Створити завдання"}

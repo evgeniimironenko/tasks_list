@@ -75,11 +75,8 @@ export function Task({ task, onDeleteTask, statusMap, statuses, onEditTask }) {
             e.stopPropagation();
             operations.handleDeleteTask(task.id);
           }}
-          isLoading={models.isDeleteLoading === task.id}
-          isDisabled={
-            models.isDeleteLoading !== null &&
-            models.isDeleteLoading !== task.id
-          }
+          loading={models.isDeleteLoading}
+          disabled={models.isDeleteLoading}
         >
           <Icon as={LuTrash} boxSize={4} />
         </IconButton>

@@ -1,7 +1,9 @@
 export const getTasks = async () => {
   const res = await fetch("https://67fbb3891f8b41c816849f2e.mockapi.io/tasks");
   if (!res.ok) {
-    throw new Error("Network response was not ok");
+    throw new Error(
+      "Помилка при отриманні задачб спробуйте перезавантажити сторінку"
+    );
   }
   const data = await res.json();
   return data;
@@ -44,7 +46,9 @@ export const deleteTask = async (taskId) => {
     }
   );
   if (!res.ok) {
-    throw new Error("Network response was not ok");
+    throw new Error(
+      "Помилка при видаленні задачі, спробуйте перезавантажити сторінку"
+    );
   }
   const data = await res.json();
   return data;
