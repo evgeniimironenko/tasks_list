@@ -34,7 +34,7 @@ export function Task({ task, onDeleteTask, statusMap, statuses, onEditTask }) {
         </Badge>
       </Flex>
       {task.description && (
-        <Text fontSize="md" mb={2} color="gray.600">
+        <Text fontSize="md" mb={2} color="gray.600" whiteSpace="pre-wrap">
           {task.description}
         </Text>
       )}
@@ -45,6 +45,8 @@ export function Task({ task, onDeleteTask, statusMap, statuses, onEditTask }) {
           p="2"
           variant="surface"
           colorPalette="gray"
+          whiteSpace="pre-wrap"
+          width="100%"
           onClick={(e) => {
             e.stopPropagation();
           }}

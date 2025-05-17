@@ -34,7 +34,7 @@ export function useFormTasks({
       .string()
       .max(1000, { message: "Приклад коду не може бути більше 1000 символів" })
       .optional(),
-    date: z.date().optional(),
+    date: z.string().optional(),
   });
 
   const {
@@ -50,7 +50,11 @@ export function useFormTasks({
       taskDescription: description ?? "",
       taskCode: code ?? "",
       status: activeStatus ? [activeStatus] : ["new"],
-      date: date ?? new Date(),
+      date: date
+        ? date instanceof Date
+          ? date.toISOString()
+          : date
+        : new Date().toISOString(),
     },
   });
 
